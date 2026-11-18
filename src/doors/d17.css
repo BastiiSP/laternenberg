@@ -1,0 +1,110 @@
+/* Türchen 17 · Die Schneekugel */
+.d17-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(48% 26% at 50% 40%, rgba(255, 196, 130, 0.13), rgba(255, 170, 100, 0.04) 60%, transparent 75%),
+    radial-gradient(70% 40% at 50% 54%, rgba(120, 140, 230, 0.10), transparent 70%),
+    radial-gradient(130% 70% at 50% 110%, #2c1a22 0%, #151432 48%, #080b1e 100%);
+}
+.d17-candle {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(55% 32% at 8% 78%, rgba(255, 170, 80, 0.30), rgba(255, 140, 60, 0.08) 55%, transparent 75%),
+    radial-gradient(40% 22% at 92% 30%, rgba(150, 170, 255, 0.10), transparent 70%);
+  animation: d17-flicker 3.4s ease-in-out infinite;
+}
+.d17-candle::after {
+  /* ferne, weiche Lichtpunkte */
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 14% 22%, rgba(255, 200, 130, 0.22) 0 6px, transparent 7px),
+    radial-gradient(circle at 84% 64%, rgba(255, 190, 120, 0.16) 0 9px, transparent 10px),
+    radial-gradient(circle at 76% 14%, rgba(200, 210, 255, 0.16) 0 5px, transparent 6px),
+    radial-gradient(circle at 22% 60%, rgba(255, 210, 150, 0.12) 0 11px, transparent 12px);
+  filter: blur(3px);
+}
+@keyframes d17-flicker {
+  0%, 100% { opacity: 0.9; }
+  30% { opacity: 1; }
+  55% { opacity: 0.78; }
+  80% { opacity: 0.96; }
+}
+
+.d17-canvas {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--head-h);
+  bottom: calc(132px + var(--safe-b));
+  touch-action: none;
+}
+.d17-canvas canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  touch-action: none;
+  cursor: grab;
+}
+
+.d17-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 20px calc(18px + var(--safe-b));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  z-index: 2;
+  pointer-events: none;
+}
+.d17-line {
+  min-height: 3em;
+  max-width: 340px;
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: var(--snow-dim);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
+  transition: color 0.6s;
+}
+.d17-line.hint {
+  color: var(--amber);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.12rem;
+  animation: d17-hint 1.2s var(--ease-out);
+}
+.d17-line.found { color: var(--snow); font-weight: 650; animation: d17-hint 1.2s var(--ease-out); }
+@keyframes d17-hint { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.d17-btns {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  pointer-events: auto;
+}
+.d17-upright {
+  display: none;
+}
+.d17-upright.show { display: inline-flex; animation: d17-hint 0.6s var(--ease-out); }
+
+.d17-fallback {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  gap: 14px;
+  text-align: center;
+}
+.d17-fb-title { font-size: 1.5rem; }
+.d17-fb-engr { color: var(--amber); font-size: 1.8rem; }

@@ -1,0 +1,62 @@
+.d02-bg { transition: transform 1.6s var(--ease-out), opacity 1.2s; transform-origin: 30% 70%; }
+.d02-shade { background: linear-gradient(180deg, rgba(20, 10, 4, 0.55) 0%, rgba(20, 10, 4, 0.05) 24%, rgba(20, 10, 4, 0.2) 50%, rgba(14, 7, 3, 0.9) 100%); }
+.d02-veil {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(120% 70% at 50% 38%, rgba(48, 24, 10, 0.72), rgba(14, 7, 3, 0.94));
+  opacity: 0; transition: opacity 1.4s ease;
+}
+.door-stage.d02-brewing .d02-veil { opacity: 1; }
+.door-stage.d02-brewing .d02-bg { transform: scale(1.08); }
+
+.d02-view { z-index: 2; opacity: 0; transition: opacity 0.6s ease; }
+.d02-view.d02-in { opacity: 1; }
+.d02-view.d02-out { opacity: 0; pointer-events: none; }
+
+.d02-col { min-height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
+.d02-pick { display: flex; flex-direction: column; gap: 12px; background: rgba(28, 16, 10, 0.74); border-color: rgba(255, 210, 150, 0.16); }
+.d02-pick .chip { align-self: flex-start; }
+.d02-ask { font-size: 1.35rem; color: var(--amber); }
+.d02-teas { display: flex; flex-direction: column; gap: 10px; }
+.d02-tea {
+  appearance: none; border: 1px solid rgba(255, 220, 170, 0.18); cursor: pointer; text-align: left;
+  display: flex; gap: 14px; align-items: center; padding: 12px 14px; border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 236, 205, 0.1), rgba(255, 236, 205, 0.04));
+  color: var(--snow); min-height: 64px;
+  transition: transform 0.18s var(--ease-spring), background 0.2s;
+}
+.d02-tea:active { transform: scale(0.97); background: rgba(255, 220, 170, 0.18); }
+.d02-swatch { display: block;
+  flex: none; width: 42px; height: 42px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.55), transparent 32%), var(--tea);
+  box-shadow: 0 0 0 3px rgba(250, 240, 222, 0.85), 0 0 18px var(--tea);
+}
+.d02-tea-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.d02-tea-name { font-size: 1.16rem; color: #ffe3b0; }
+.d02-tea-desc { font-size: 1rem; line-height: 1.35; color: var(--snow-dim); }
+.d02-btns { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 4px; }
+
+/* Ziehzeit */
+.d02-brew { align-items: center; gap: 4px; padding-left: 16px; padding-right: 16px; }
+.d02-cupwrap { flex: none; width: min(300px, 78vw, 36vh); aspect-ratio: 1 / 1.08; margin-top: -6px; }
+.d02-cup { width: 100%; height: 100%; }
+.d02-timer { flex: none; text-align: center; margin-top: -10px; }
+.d02-time { font-size: 2.4rem; color: #ffe0a8; font-variant-numeric: tabular-nums; text-shadow: 0 0 22px rgba(255, 170, 80, 0.45); line-height: 1; }
+.d02-label { font-size: 0.86rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 220, 180, 0.6); font-weight: 700; margin-top: 4px; }
+.d02-story {
+  position: relative; flex: 1; min-height: 0; width: 100%; overflow-y: auto; overscroll-behavior: contain;
+  margin-top: 10px; padding: 14px 18px 34px; border-radius: 20px;
+  background: rgba(30, 17, 9, 0.62); border: 1px solid rgba(255, 210, 150, 0.12);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 14px, #000 calc(100% - 10px), transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 14px, #000 calc(100% - 10px), transparent 100%);
+}
+.d02-story-title { font-size: 1.12rem; color: var(--amber); margin-bottom: 8px; font-style: italic; }
+.d02-para { font-size: 1.02rem; line-height: 1.55; color: #f6e9d6; margin-bottom: 10px; }
+.d02-foot { flex: none; padding-top: 10px; }
+.d02-result { margin-top: 10px; text-align: center; display: flex; flex-direction: column; gap: 8px; }
+.d02-gong { font-size: 1.5rem; color: var(--ink); }
+.d02-wisdom { font-family: var(--font-display); font-style: italic; font-size: 1.1rem; line-height: 1.35; }
+.d02-basti { color: #8a4a1e; margin-top: 4px; }
+.d02-done .d02-time { color: var(--amber); }
+.d02-cupwrap { transition: width 1.2s var(--ease-out); }
+.d02-done .d02-cupwrap { width: min(230px, 64vw, 27vh); }
+.d02-done .d02-label { display: none; }

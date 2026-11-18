@@ -1,0 +1,30 @@
+// Titel der 24 Laternen. Die Karte zeigt sie, ohne die Türchen selbst zu laden.
+export const DOORS = [
+  null,
+  { title: 'Die erste Laterne', zone: 'Tal' },
+  { title: 'Die Teestube am Bach', zone: 'Tal' },
+  { title: 'Sieben Glimmlinge', zone: 'Tal' },
+  { title: 'Das große Sofa-Quiz', zone: 'Tal' },
+  { title: 'Beta lesen', zone: 'Tal' },
+  { title: 'Der Stiefel vor der Tür', zone: 'Tal' },
+  { title: 'Waldkino', zone: 'Wald' },
+  { title: 'Die Spieluhr', zone: 'Wald' },
+  { title: 'Die dunkelste Nacht', zone: 'Wald' },
+  { title: 'Lorelais Kaffeewagen', zone: 'Wald' },
+  { title: 'Ein Kerzenmoment', zone: 'Wald' },
+  { title: 'Das Puzzle vom Grat', zone: 'Wald' },
+  { title: 'Sternschnuppennacht', zone: 'Wald' },
+  { title: 'Der Überhang', zone: 'Fels' },
+  { title: 'Das Brockengespenst', zone: 'Fels' },
+  { title: 'Badezeit', zone: 'Fels' },
+  { title: 'Die Schneekugel', zone: 'Fels' },
+  { title: 'Die Truhe mit drei Schlössern', zone: 'Fels' },
+  { title: 'Das Projekt', zone: 'Fels' },
+  { title: 'Hasenkino', zone: 'Fels' },
+  { title: 'Die längste Nacht', zone: 'Gipfel' },
+  { title: 'Das Sternbild', zone: 'Gipfel' },
+  { title: '24 Laternen – das Lied', zone: 'Gipfel' },
+  { title: 'Der Gipfel', zone: 'Gipfel' },
+];
+
+export const dateLabel = (day) => `${day}. Dezember`;

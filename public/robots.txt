@@ -1,0 +1,10 @@
+# Linkvorschauen dürfen Startseite und Vorschaubild abrufen.
+User-agent: WhatsApp
+User-agent: facebookexternalhit
+Allow: /$
+Allow: /img/og.jpg
+Disallow: /
+
+# Suchmaschinen und sonstige Crawler bleiben ausgeschlossen.
+User-agent: *
+Disallow: /

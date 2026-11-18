@@ -1,0 +1,303 @@
+/* Türchen 8 · Die Spieluhr */
+.d08-stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  --werk-h: clamp(150px, 22vh, 190px);
+  --ctrl-h: clamp(176px, 25vh, 214px);
+  --lower-h: calc(var(--werk-h) + var(--ctrl-h) + 22px + var(--safe-b));
+  background:
+    radial-gradient(90% 45% at 20% 100%, rgba(255, 160, 80, 0.16), transparent 70%),
+    radial-gradient(120% 60% at 50% 100%, #2a1824 0%, #170e18 55%, #0b0710 100%);
+}
+
+/* ---------- Bild mit der Spieluhr ---------- */
+.d08-scene {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: calc(100% - var(--lower-h) + 34px);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 78%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 78%, transparent 100%);
+}
+.d08-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: none;
+  transform-origin: 0 0;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.d08-scene::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(7, 11, 28, 0.55) 0%, rgba(7, 11, 28, 0) 26%);
+}
+.d08-candle,
+.d08-lantern,
+.d08-boxglow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.d08-candle::before,
+.d08-lantern::before,
+.d08-boxglow::before {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
+}
+.d08-candle::before {
+  width: 150px;
+  height: 170px;
+  background: radial-gradient(closest-side, rgba(255, 200, 120, 0.45), rgba(255, 150, 60, 0.12) 60%, transparent);
+  animation: d08-flicker 2.8s ease-in-out infinite;
+}
+.d08-lantern::before {
+  width: 130px;
+  height: 150px;
+  background: radial-gradient(closest-side, rgba(255, 200, 120, 0.35), rgba(255, 150, 60, 0.08) 60%, transparent);
+  animation: d08-flicker 3.6s 0.7s ease-in-out infinite;
+}
+.d08-boxglow {
+  opacity: 0.15;
+}
+.d08-boxglow::before {
+  width: 280px;
+  height: 200px;
+  background: radial-gradient(closest-side, rgba(255, 226, 160, 0.55), rgba(255, 170, 80, 0.18) 55%, transparent);
+}
+@keyframes d08-flicker {
+  0%, 100% { opacity: 0.85; transform: translate(-50%, -50%) scale(1); }
+  23% { opacity: 1; transform: translate(-50%, -51%) scale(1.04); }
+  51% { opacity: 0.7; transform: translate(-50%, -50%) scale(0.97); }
+  77% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.02); }
+}
+
+.d08-intro {
+  position: absolute;
+  z-index: 3;
+  left: 18px;
+  right: 18px;
+  top: calc(var(--head-h) + 4px);
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: rgba(13, 12, 30, 0.6);
+  border: 1px solid rgba(255, 220, 160, 0.16);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-size: 1rem;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--snow);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+  transition: opacity 1s ease, transform 1s var(--ease-out);
+  pointer-events: none;
+}
+.d08-intro.gone { opacity: 0; transform: translateY(-8px); }
+
+.d08-motes {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 4;
+}
+
+/* ---------- Unterer Teil: Werk, Drehbühne, Kurbel ---------- */
+.d08-lower {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: 0 14px calc(12px + var(--safe-b));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.d08-werk {
+  position: relative;
+  height: var(--werk-h);
+  border-radius: 20px;
+  padding: 8px;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.25), transparent 12%, transparent 88%, rgba(0, 0, 0, 0.25)),
+    repeating-linear-gradient(97deg, #5a3218 0 7px, #633a1c 7px 11px, #52301a 11px 19px),
+    #5a3218;
+  box-shadow:
+    0 0 0 1.5px #c99640 inset,
+    0 0 0 4px #3a200e inset,
+    0 1px 0 rgba(255, 230, 180, 0.25) inset,
+    0 18px 40px rgba(0, 0, 0, 0.55),
+    0 0 50px rgba(255, 170, 80, 0.08);
+}
+.d08-werk-canvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 13px;
+  box-shadow: 0 0 0 1px rgba(255, 210, 140, 0.35), 0 4px 14px rgba(0, 0, 0, 0.6) inset;
+}
+.d08-werk::after {
+  /* Glasscheibe über dem Werk */
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 13px;
+  pointer-events: none;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.13) 0%, rgba(255, 255, 255, 0.03) 22%, transparent 23%, transparent 62%, rgba(255, 255, 255, 0.05) 63%, transparent 72%);
+}
+.d08-plaque {
+  position: absolute;
+  left: 50%;
+  bottom: -9px;
+  transform: translateX(-50%);
+  padding: 2px 14px 3px;
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: #4a2c08;
+  background: linear-gradient(180deg, #ffe7a8, #d9a64a 55%, #a87628);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), 0 1px 0 rgba(255, 255, 255, 0.5) inset;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.d08-controls {
+  height: var(--ctrl-h);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--ctrl-h);
+  gap: 6px;
+  align-items: center;
+  margin-top: 6px;
+}
+.d08-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 0;
+  height: 100%;
+}
+.d08-turntable {
+  position: relative;
+  width: min(100%, 176px);
+  aspect-ratio: 160 / 80;
+  margin-top: 40px;
+}
+.d08-disc {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.5));
+}
+.d08-fig {
+  position: absolute;
+  left: 0;
+  top: 0;
+  will-change: transform;
+  pointer-events: none;
+}
+.d08-fig .bunny { filter: drop-shadow(0 0 6px rgba(255, 210, 150, 0.25)); }
+.d08-auto {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.6s ease, transform 0.6s var(--ease-out);
+  min-height: 44px;
+  white-space: nowrap;
+}
+.d08-auto.show { opacity: 1; transform: none; pointer-events: auto; }
+.d08-auto.on { box-shadow: 0 0 0 1.5px rgba(255, 197, 110, 0.7) inset, 0 0 18px rgba(255, 197, 110, 0.25); }
+
+.d08-crank {
+  position: relative;
+  width: var(--ctrl-h);
+  height: var(--ctrl-h);
+  touch-action: none;
+  cursor: grab;
+  border-radius: 50%;
+}
+.d08-crank.grab { cursor: grabbing; }
+.d08-crank-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.55));
+}
+.d08-hint {
+  transform-origin: 0 0;
+  animation: d08-spin 3.2s linear infinite;
+  transition: opacity 0.8s;
+}
+.d08-hint.off { opacity: 0; }
+@keyframes d08-spin { to { transform: rotate(360deg); } }
+
+/* ---------- Zettel im Deckel ---------- */
+.d08-note {
+  position: absolute;
+  z-index: 6;
+  left: 50%;
+  top: calc(var(--head-h) + (var(--scene-h, 400px) - var(--head-h)) * 0.42);
+  width: min(300px, calc(100% - 48px));
+  padding: 16px 20px 14px;
+  text-align: center;
+  transform: translate(-50%, -50%) rotate(-2deg);
+  transform-origin: 50% 50%;
+  opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
+  background:
+    repeating-linear-gradient(180deg, transparent 0 27px, rgba(120, 90, 60, 0.12) 27px 28px),
+    linear-gradient(180deg, var(--paper), var(--paper-2));
+  transition: opacity 0.5s ease, transform 0.8s var(--ease-spring);
+}
+.d08-note.from-lid:not(.show) { transform: translate(-50%, -50%) scale(0.15) rotate(-12deg); }
+.d08-note.show { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) rotate(-2deg); }
+.d08-note-head {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+.d08-note-text { font-size: 1.6rem; line-height: 1.2; color: var(--ink); }
+.d08-note-sign { font-size: 1.4rem; text-align: right; color: var(--ink-soft); margin-top: 4px; }
+
+.d08-notetab {
+  position: absolute;
+  z-index: 5;
+  translate: -50% -50%;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 6px 14px;
+  border: 0;
+  border-radius: 12px;
+  font-family: var(--font-hand);
+  font-size: 1.25rem;
+  color: var(--ink);
+  background: linear-gradient(180deg, var(--paper), var(--paper-2));
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45), 0 0 22px rgba(255, 210, 150, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s;
+  cursor: pointer;
+  rotate: -6deg;
+}
+.d08-notetab.show { opacity: 1; pointer-events: auto; animation: floaty 3.4s ease-in-out infinite; }

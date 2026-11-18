@@ -1,0 +1,315 @@
+/* Türchen 1 · Die erste Laterne */
+.d01 {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #0b1236;
+}
+
+/* Kamera-Ebenen: 1024 × 1536-Bildfläche, nur per transform bewegt */
+.d01-cam {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1024px;
+  height: 1536px;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+.d01-img {
+  width: 1024px;
+  height: 1536px;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.d01-lat { opacity: 0; transition: opacity 1.6s ease; }
+.d01-lat.show { opacity: 1; }
+.d01-lat.instant { transition: none; }
+
+/* Licht in der dunklen Laterne */
+.d01-glow {
+  position: absolute;
+  width: 560px;
+  height: 560px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0.55);
+  opacity: 0.08;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(circle, rgba(255, 236, 180, 0.95) 0%, rgba(255, 190, 90, 0.55) 16%, rgba(255, 157, 60, 0.18) 42%, rgba(255, 157, 60, 0) 70%);
+}
+.d01-flame {
+  position: absolute;
+  width: 34px;
+  height: 52px;
+  margin: -40px 0 0 -17px;
+  opacity: 0;
+  pointer-events: none;
+  border-radius: 50% 50% 46% 46% / 64% 64% 36% 36%;
+  background: radial-gradient(ellipse at 50% 70%, #fffbe8 0%, #ffe39a 35%, #ffa844 70%, rgba(255, 140, 40, 0) 100%);
+  transform-origin: 50% 90%;
+  animation: flicker 1.3s ease-in-out infinite;
+  filter: drop-shadow(0 0 14px rgba(255, 190, 90, 0.9));
+}
+
+/* Halte-Ring um die Laterne */
+.d01-ring {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  margin: -150px 0 0 -150px;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.6s ease, transform 0.8s var(--ease-spring);
+  pointer-events: none;
+}
+.d01-ring.show { opacity: 1; transform: scale(1); }
+.d01-ring svg { width: 100%; height: 100%; overflow: visible; transform: rotate(-90deg); }
+.d01-ring-bg {
+  fill: none;
+  stroke: rgba(255, 230, 180, 0.35);
+  stroke-width: 5;
+  stroke-dasharray: 2 7;
+  animation: d01-ring-breathe 2.2s ease-in-out infinite;
+  transform-origin: 100px 100px;
+}
+.d01-ring-fg {
+  fill: none;
+  stroke: #ffd98a;
+  stroke-width: 7;
+  stroke-linecap: round;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  filter: drop-shadow(0 0 8px rgba(255, 190, 90, 0.95));
+}
+.d01-ring.active .d01-ring-bg { animation-duration: 0.9s; stroke: rgba(255, 230, 180, 0.6); }
+@keyframes d01-ring-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+
+/* Schnee, Vignette, Schatten für Lesbarkeit, Blitz */
+.d01-snow { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.d01-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(130% 90% at 50% 45%, rgba(5, 8, 26, 0) 55%, rgba(5, 8, 26, 0.55) 100%);
+}
+.d01-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(7, 11, 28, 0.35) 0%, rgba(7, 11, 28, 0) 18%, rgba(7, 11, 28, 0) 52%, rgba(7, 11, 28, 0.72) 80%, rgba(7, 11, 28, 0.88) 100%);
+  transition: background 1s ease, opacity 1s ease;
+}
+.d01-shade.dim { background: rgba(7, 11, 28, 0.5); }
+.d01-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  --fx: 50%;
+  --fy: 60%;
+  background: radial-gradient(circle at var(--fx) var(--fy), #fffaf0 0%, #ffe2a6 22%, rgba(255, 170, 80, 0.85) 48%, rgba(255, 140, 60, 0.35) 100%);
+  z-index: 3;
+}
+.d01-flash.on { opacity: 1; transition: opacity 0.35s ease-in; }
+.d01-flash.fade { opacity: 0; transition: opacity 1.8s ease-out; }
+
+/* Erzähltext */
+.d01-story {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: calc(84px + var(--safe-b));
+  z-index: 2;
+  pointer-events: none;
+  text-shadow: 0 2px 14px rgba(5, 8, 26, 0.95), 0 0 2px rgba(5, 8, 26, 0.8);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.d01-story.out { opacity: 0; transform: translateY(-8px); }
+.d01-line { font-size: 1.42rem; line-height: 1.36; font-weight: 480; }
+.d01-big { font-size: 2.6rem; line-height: 1.1; color: #fff3d6; text-align: center; }
+.d01-story.big { text-align: center; bottom: auto; top: 30%; }
+.d01-story.big::before {
+  content: '';
+  position: absolute;
+  inset: -40px -30px;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgba(7, 11, 28, 0.6), rgba(7, 11, 28, 0));
+}
+.d01-sub { margin-top: 12px; font-size: 1.08rem; color: var(--amber); font-weight: 700; text-align: center; opacity: 0; animation: d01-fade 1s var(--ease-out) forwards; }
+.d01-w {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(8px);
+  filter: blur(4px);
+  animation: d01-word 0.9s var(--ease-out) forwards;
+}
+.d01-story.all .d01-w, .d01-story.all .d01-sub { animation: none; opacity: 1; transform: none; filter: none; }
+@keyframes d01-word { to { opacity: 1; transform: none; filter: blur(0); } }
+@keyframes d01-fade { to { opacity: 1; } }
+
+/* Fußzeile */
+.d01-hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(26px + var(--safe-b));
+  transform: translateX(-50%);
+  z-index: 2;
+  font-size: 0.86rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--snow-dim);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8);
+}
+.d01-hint.show { opacity: 0.85; animation: d01-nudge 1.8s ease-in-out infinite; }
+@keyframes d01-nudge { 0%, 100% { transform: translateX(-50%); } 50% { transform: translateX(calc(-50% + 4px)); } }
+.d01-skip {
+  position: absolute;
+  right: 14px;
+  bottom: calc(16px + var(--safe-b));
+  z-index: 4;
+  opacity: 0.75;
+  min-height: 44px;
+}
+.d01-holdhint {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: calc(30px + var(--safe-b));
+  z-index: 2;
+  text-align: center;
+  font-weight: 800;
+  font-size: 1rem;
+  color: #fff3d6;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: none;
+}
+.d01-holdhint.show { opacity: 1; transform: none; }
+
+/* Sprechblasen oben */
+.d01-talk {
+  position: absolute;
+  top: calc(var(--head-h) + 8px);
+  left: 12px;
+  right: 12px;
+  z-index: 3;
+  pointer-events: none;
+}
+.d01-say {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+  transform-origin: 30px 20px;
+  transition: opacity 0.35s ease, transform 0.45s var(--ease-spring);
+}
+.d01-say.in { opacity: 1; transform: none; }
+.d01-say.gone { opacity: 0; transform: translateY(-6px); transition-duration: 0.25s; }
+.d01-face {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(13, 20, 48, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+.d01-face svg { margin-top: 2px; }
+.d01-say-glimm .d01-face { background: rgba(60, 40, 20, 0.7); border-color: rgba(255, 200, 120, 0.4); }
+.d01-bubble { flex: 1; font-size: 1rem; min-width: 0; }
+.d01-bubble::after { left: -6px; top: 18px; bottom: auto; width: 14px; height: 14px; background: var(--paper); }
+
+/* Glimmling */
+.d01-glimm {
+  position: absolute;
+  width: 0;
+  height: 0;
+  transform: translate(0, 0) scale(0.12);
+  opacity: 0;
+  transition: transform 3s cubic-bezier(0.3, 0.6, 0.25, 1), opacity 0.8s ease;
+}
+.d01-glimm.out { transform: translate(var(--dx), var(--dy)) scale(1); opacity: 1; }
+.d01-glimm-in {
+  position: absolute;
+  left: -85px;
+  top: -92px;
+  filter: drop-shadow(0 0 24px rgba(255, 200, 110, 0.9));
+}
+.d01-glimm.awake .d01-glimm-in { animation: floaty 3.2s ease-in-out infinite; }
+.d01-glimm.bob .d01-glimm-in { animation: d01-bob 0.6s var(--ease-spring), floaty 3.2s 0.6s ease-in-out infinite; }
+@keyframes d01-bob { 0% { transform: scale(1); } 40% { transform: scale(1.12, 0.92); } 100% { transform: scale(1); } }
+
+/* Bastis Karte */
+.d01-cardwrap {
+  z-index: 5;
+  display: flex;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.d01-cardwrap.in { opacity: 1; }
+.d01-cardcol {
+  margin: auto;
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 6px 0 4px;
+}
+.d01-card {
+  width: 100%;
+  padding: 20px 22px 18px;
+  transform: translateY(40px) rotate(-4deg);
+  opacity: 0;
+  transition: transform 1.1s var(--ease-spring), opacity 0.7s ease;
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 60%),
+    linear-gradient(180deg, var(--paper), var(--paper-2));
+}
+.d01-cardwrap.in .d01-card { transform: rotate(-1.2deg); opacity: 1; transition-delay: 0.15s; }
+.d01-card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  border-bottom: 1px dashed rgba(91, 80, 104, 0.35);
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+.d01-hello { font-size: 1.75rem; color: var(--ink); }
+.d01-cline { font-size: 1.42rem; line-height: 1.22; color: var(--ink); margin-top: 6px; }
+.d01-sign { font-size: 1.7rem; text-align: right; color: #8a4b1f; margin-top: 8px; }
+.d01-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.7s ease 1.2s, transform 0.7s var(--ease-out) 1.2s;
+}
+.d01-cardwrap.in .d01-actions { opacity: 1; transform: none; }
